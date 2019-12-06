@@ -29,26 +29,29 @@ package de.fraunhofer.aisec.cpg.frontends;
 import de.fraunhofer.aisec.cpg.TranslationConfiguration;
 import de.fraunhofer.aisec.cpg.frontends.cpp.CXXLanguageFrontend;
 import de.fraunhofer.aisec.cpg.frontends.java.JavaLanguageFrontend;
+import de.fraunhofer.aisec.cpg.frontends.python.PythonLanguageFrontend;
 import java.util.List;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class LanguageFrontendFactory {
 
   private static final List<String> JAVA_EXTENSIONS = List.of(".java");
   private static final List<String> CXX_EXTENSIONS = List.of(".h", ".c", ".cpp", ".cc");
+  private static final List<String> PYTHON_EXTENSIONS = List.of(".py");
 
   // hide ctor
   private LanguageFrontendFactory() {}
 
-  @Nullable
-  public static LanguageFrontend getFrontend(String fileType, TranslationConfiguration config) {
-
+  public static LanguageFrontend getFrontend(String fileType, TranslationConfiguration config)
+      throws TranslationException {
     if (JAVA_EXTENSIONS.contains(fileType)) {
       return new JavaLanguageFrontend(config);
     } else if (CXX_EXTENSIONS.contains(fileType)) {
       return new CXXLanguageFrontend(config);
+    } else if (PYTHON_EXTENSIONS.contains(fileType)) {
+      return new PythonLanguageFrontend(config);
     } else {
-      return null;
+      throw new TranslationException(
+          String.format("No language frontend found for extension %s ", fileType));
     }
   }
 }
