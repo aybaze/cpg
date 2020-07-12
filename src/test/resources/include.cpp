@@ -7,4 +7,4 @@ int main() {
 SomeClass::SomeClass() {
 }
 
-int SomeClass::DoSomething() { return 1; }
+int SomeClass::DoSomething() { return someField; }
